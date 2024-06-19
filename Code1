@@ -1,0 +1,67 @@
+import pandas as pd
+
+# Load the dataset into a Pandas DataFrame
+data = pd.read_csv('path_to_your_dataset.csv')
+
+# Display the first few rows of the dataset
+data.head()
+
+
+# Number of people of each race
+race_count = data['race'].value_counts()
+race_count
+
+
+# Average age of men
+average_age_men = data[data['sex'] == 'Male']['age'].mean()
+average_age_men
+
+
+# Percentage of people with a Bachelor's degree
+total_people = data.shape[0]
+bachelors_count = data[data['education'] == 'Bachelors'].shape[0]
+percentage_bachelors = (bachelors_count / total_people) * 100
+percentage_bachelors
+
+# Advanced education categories
+advanced_education = ['Bachelors', 'Masters', 'Doctorate']
+
+# Percentage of people with advanced education making more than 50K
+advanced_education_count = data[data['education'].isin(advanced_education)].shape[0]
+advanced_education_rich_count = data[(data['education'].isin(advanced_education)) & (data['salary'] == '>50K')].shape[0]
+percentage_advanced_education_rich = (advanced_education_rich_count / advanced_education_count) * 100
+percentage_advanced_education_rich
+
+
+# Percentage of people without advanced education making more than 50K
+non_advanced_education_count = data[~data['education'].isin(advanced_education)].shape[0]
+non_advanced_education_rich_count = data[(~data['education'].isin(advanced_education)) & (data['salary'] == '>50K')].shape[0]
+percentage_non_advanced_education_rich = (non_advanced_education_rich_count / non_advanced_education_count) * 100
+percentage_non_advanced_education_rich
+
+
+# Minimum number of hours a person works per week
+min_hours_per_week = data['hours-per-week'].min()
+min_hours_per_week
+
+
+# Percentage of people working minimum hours per week with >50K salary
+min_hours_workers = data[data['hours-per-week'] == min_hours_per_week]
+min_hours_rich_workers = min_hours_workers[min_hours_workers['salary'] == '>50K']
+percentage_min_hours_rich = (min_hours_rich_workers.shape[0] / min_hours_workers.shape[0]) * 100
+percentage_min_hours_rich
+
+# Country with the highest percentage of people earning >50K
+country_counts = data['native-country'].value_counts()
+country_rich_counts = data[data['salary'] == '>50K']['native-country'].value_counts()
+country_rich_percentage = (country_rich_counts / country_counts) * 100
+highest_country_rich_percentage = country_rich_percentage.idxmax(), country_rich_percentage.max()
+highest_country_rich_percentage
+
+
+# Most popular occupation for those who earn >50K in India
+india_occupations_rich = data[(data['native-country'] == 'India') & (data['salary'] == '>50K')]['occupation'].value_counts()
+most_popular_occupation_india_rich = india_occupations_rich.idxmax()
+most_popular_occupation_india_rich
+
+
